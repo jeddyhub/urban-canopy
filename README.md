@@ -1,18 +1,12 @@
 # Denver Canopy Equity
 
-**Question.** Given a fixed annual tree-planting budget, where should Denver
-plant — and how much aggregate benefit does the city give up in order to
-distribute canopy more equitably?
+**Question.** Given a fixed annual tree-planting budget, where should Denver plant — and how much aggregate benefit does the city give up in order to distribute canopy more equitably?
 
-The city's Urban Forest Strategic Plan sets a minimum canopy target and names
-equity as a goal, but a target is not an allocation. This project turns the
-target into a decision problem, solves it under several competing definitions of
-"fair," and quantifies the trade-off between them.
+The city's Urban Forest Strategic Plan sets a minimum canopy target and names equity as a goal, but a target is not an allocation. This project turns the target into a decision problem, solves it under several competing definitions of "fair," and quantifies the trade-off between them.
 
 ## Status
 
-Scaffold only. Notebooks contain the plan and the model specification; the
-implementation is the work.
+Scaffold only. Notebooks contain the plan and the model specification; the implementation is the work.
 
 ## Setup
 
@@ -32,14 +26,11 @@ nbstripout --install
 jupyter lab
 ```
 
-`environment.yml` installs this repo in editable mode (`pip: -e .`), which is
-what lets a notebook run `from canopy.io import RAW` without any `sys.path`
-manipulation.
+`environment.yml` installs this repo in editable mode (`pip: -e .`), which is what lets a notebook run `from canopy.io import RAW` without any `sys.path` manipulation.
 
 ### Census API key
 
-Request one at https://api.census.gov/data/key_signup.html, then create a `.env`
-file in the repo root:
+Request one at https://api.census.gov/data/key_signup.html, then create a `.env` file in the repo root:
 
 ```
 CENSUS_API_KEY=your_key_here
@@ -79,14 +70,11 @@ denver-canopy-equity/
 
 ## The model
 
-Block groups indexed by *b*. Decision variable *x_b* ∈ ℤ≥0 is trees planted in
-*b*. With area *A_b*, current canopy fraction *s_b*, population *p_b*, capacity
-*k_b*, unit cost *c_b*, crown area *a*, and budget *C*, post-planting canopy is
+Block groups indexed by *b*. Decision variable *x_b* ∈ ℤ≥0 is trees planted in *b*. With area *A_b*, current canopy fraction *s_b*, population *p_b*, capacity *k_b*, unit cost *c_b*, crown area *a*, and budget *C*, post-planting canopy is
 
-&nbsp;&nbsp;&nbsp;&nbsp;*f_b(x) = s_b + a·x_b / A_b*
+*f_b(x) = s_b + a·x_b / A_b*
 
-subject to Σ *c_b x_b* ≤ *C* and 0 ≤ *x_b* ≤ *k_b*. Three objectives are solved
-and compared:
+subject to Σ *c_b x_b* ≤ *C* and 0 ≤ *x_b* ≤ *k_b*. Three objectives are solved and compared:
 
 | Objective | Form | Type |
 |---|---|---|
@@ -94,20 +82,14 @@ and compared:
 | Rawlsian | max min_b *f_b(x)* | LP / ILP |
 | Inequality-averse | max Σ *p_b* *U_ε*(*f_b(x)*), *U_ε* isoelastic | LP via piecewise-linear envelope |
 
-The parameter ε interpolates between the first two. The headline result is the
-**price of fairness** curve: utilitarian welfare forgone as a function of the
-equity achieved.
+The parameter ε interpolates between the first two. The headline result is the **price of fairness** curve: utilitarian welfare forgone as a function of the equity achieved.
 
 ## Known limitations
 
-- The public tree inventory covers city-managed trees only; private canopy is
-  visible in the canopy layer but not attributable to owners.
-- Block-group aggregation invites the modifiable areal unit problem. Results
-  should be checked at a second spatial resolution.
-- Crown area and planting capacity are estimated, not measured. Sensitivity
-  analysis is part of the deliverable, not an optional extra.
-- Planting a tree is not the same as a tree surviving to maturity; mortality is
-  not modelled.
+- The public tree inventory covers city-managed trees only; private canopy is visible in the canopy layer but not attributable to owners.
+- Block-group aggregation invites the modifiable areal unit problem. Results should be checked at a second spatial resolution.
+- Crown area and planting capacity are estimated, not measured. Sensitivity analysis is part of the deliverable, not an optional extra.
+- Planting a tree is not the same as a tree surviving to maturity; mortality is not modelled.
 
 ## Data sources
 
